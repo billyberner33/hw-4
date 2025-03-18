@@ -1,25 +1,24 @@
-<h1><%= @place.name %></h1>
+<h2><%= @place.name %></h2>
+<p><%= @place.description %></p>
 
-<h2>My Entries</h2>
-
-<% @entries.each do |entry| %>
-  <div class="entry">
-    <h3><%= entry.title %></h3>
-    <h4><%= entry.occurred_on %></h4>
-    <p><%= entry.description %></p>
-
-    <% if entry.uploaded_image.attached? %>
-      <p>
-        <%= image_tag entry.uploaded_image, width: 300, alt: "Entry Image" %>
-      </p>
-    <% end %>
-  </div>
+<% if @current_user %>
+  <a href="/entries/new?place_id=<%= @place.id %>" class="btn btn-primary">Add Entry</a>
 <% end %>
 
-<p>
-  <%= link_to "New Entry", new_entry_path(place_id: @place.id), class: "btn btn-primary" %>
-</p>
-
-<p>
-  <%= link_to "Back to All Places", places_path, class: "btn btn-secondary" %>
-</p>
+<h3>Entries</h3>
+<% if @entries.any? %>
+  <div class="list-group">
+    <% @entries.each do |entry| %>
+      <div class="list-group-item">
+        <h5><%= entry.title %></h5>
+        <p><%= entry.description %></p>
+        <p><small>Occurred on: <%= entry.occurred_on %></small></p>
+        <% if entry.image.present? %>
+          <img src="<%= entry.image.url %>" class="img-fluid mt-2">
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>No entries yet for this place.</p>
+<% end %>

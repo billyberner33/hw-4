@@ -1,29 +1,21 @@
-<h1>Sign Up</h1>
+<h2>Create an Account</h2>
 
-<%= form_with model: @user, url: "/users", method: "post", local: true do |f| %>
-  <p>
-    <%= f.label :username, "Username" %>
-    <%= f.text_field :username, required: true %>
-  </p>
+<form action="/users" method="post">
+  <div class="mb-3">
+    <label for="username_input" class="form-label">Username</label>
+    <input type="text" name="username" id="username_input" class="form-control" required>
+  </div>
 
-  <p>
-    <%= f.label :email, "Email" %>
-    <%= f.email_field :email, required: true %>
-  </p>
+  <div class="mb-3">
+    <label for="email_input" class="form-label">Email</label>
+    <input type="email" name="email" id="email_input" class="form-control" required>
+  </div>
 
-  <p>
-    <%= f.label :password, "Password" %>
-    <%= f.password_field :password, required: true %>
-  </p>
+  <div class="mb-3">
+    <label for="password_input" class="form-label">Password</label>
+    <input type="password" name="password" id="password_input" class="form-control" required>
+  </div>
 
-  <p>
-    <%= f.label :password_confirmation, "Confirm Password" %>
-    <%= f.password_field :password_confirmation, required: true %>
-  </p>
-
-  <button type="submit">Sign Up</button>
-<% end %>
-
-<p>
-  Already have an account? <%= link_to "Login here", login_path %>
-</p>
+  <button class="btn btn-primary">Signup</button>
+  <a href="/login" class="btn btn-secondary">Login</a>
+</form>

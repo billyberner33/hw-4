@@ -1,11 +1,16 @@
-<h1>Places</h1>
+<h2>Places</h2>
 
-<ul>
+<% if @current_user %>
+  <a href="/places/new" class="btn btn-success mb-3">Add New Place</a>
+<% else %>
+  <p>You must <a href="/login">login</a> to add places.</p>
+<% end %>
+
+<div class="list-group">
   <% @places.each do |place| %>
-    <li><%= link_to place.name, place_path(place) %></li>
+    <a href="/places/<%= place.id %>" class="list-group-item list-group-item-action">
+      <h5><%= place.name %></h5>
+      <p><%= place.description %></p>
+    </a>
   <% end %>
-</ul>
-
-<p>
-  <%= link_to "New Place", new_place_path, class: "btn btn-primary" %>
-</p>
+</div>

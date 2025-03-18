@@ -1,19 +1,16 @@
-<h1>Login</h1>
+<h2>Login</h2>
 
-<%= form_with url: "/sessions", method: "post", local: true do |f| %>
-  <p>
-    <label for="email">Email</label>
-    <%= f.email_field :email, id: "email", required: true %>
-  </p>
+<form action="/sessions" method="post">
+  <div class="mb-3">
+    <label for="email_input" class="form-label">Email</label>
+    <input type="email" name="email" id="email_input" class="form-control" required>
+  </div>
 
-  <p>
-    <label for="password">Password</label>
-    <%= f.password_field :password, id: "password", required: true %>
-  </p>
+  <div class="mb-3">
+    <label for="password_input" class="form-label">Password</label>
+    <input type="password" name="password" id="password_input" class="form-control" required>
+  </div>
 
-  <button type="submit">Login</button>
-<% end %>
-
-<p>
-  Don't have an account? <%= link_to "Sign up here", new_user_path %>
-</p>
+  <button class="btn btn-primary">Login</button>
+  <a href="/users/new" class="btn btn-secondary">Signup</a>
+</form>
