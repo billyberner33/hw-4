@@ -21,4 +21,8 @@ class User < ApplicationRecord
   private
 
   def encrypt_password
-   
+    if password.present?
+      self.password_digest = BCrypt::Password.create(password)
+    end
+  end
+end

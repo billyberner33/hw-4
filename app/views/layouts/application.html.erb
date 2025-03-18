@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tacostagram Final</title>
+  <title>Travel Journal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <link rel="stylesheet" href="/stylesheets/application.css">
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
 </head>
-
 <body>
-  <div class="flash-message">
-    <% if flash["notice"] %>
-      <p><%= flash["notice"] %></p>
-    <% end %>
-  </div>
+  <header>
+    <nav>
+      <% if current_user %>
+        <p>Welcome, <%= current_user.username %>! | <%= link_to "Logout", logout_path, method: :delete %></p>
+      <% else %>
+        <%= link_to "Login", login_path %> |
+        <%= link_to "Signup", signup_path %>
+      <% end %>
+    </nav>
+  </header>
 
-  <nav>
-    <a href="/">Home</a>
+  <main>
+    <%= yield %>
+  </main>
 
-    <% if session["user_id"] %>
-      <a href="/logout">Logout</a>
-    <% else %>
-      <a href="/login">Login</a>
-      <a href="/users/new">Signup</a>
-    <% end %>
-  </nav>
-
-  <%= yield %>
+  <footer>
+    <p>&copy; <%= Time.current.year %> Travel Journal</p>
+  </footer>
 </body>
 </html>

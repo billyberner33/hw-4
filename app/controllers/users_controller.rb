@@ -4,22 +4,17 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    @user.password = BCrypt::Password.create(params[:user][:password])
+    @user = User.new
+    @user.username = params[:username]
+    @user.email = params[:email]
+    @user.password_digest = BCrypt::Password.create(params[:password]) # Encrypt password before saving
 
     if @user.save
-      session[:user_id] = @user.id  # Auto-login the user after signup
-      flash[:notice] = "Account created successfully! You are now logged in."
-      redirect_to places_path
+      flash[:notice] = "Thanks for signing up! Please log in."
+      redirect_to login_path
     else
       flash[:alert] = "Error creating account. Please try again."
-      render :new, status: :unprocessable_entity
+      render :new
     end
-  end
-
-  private
-
-  def user_params
-    params.require(:user).permit(:username, :email, :password)
   end
 end
