@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Tacostagram Final</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>Tacostagram Final</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <link rel="stylesheet" href="/stylesheets/application.css">
-  </head>
+  <link rel="stylesheet" href="/stylesheets/application.css">
+</head>
 
-  <body>
-    <div>
-      <%= flash["notice"] %>
-    </div>
-    <div>
-      <a href="/">Home</a>
+<body>
+  <div class="flash-message">
+    <% if flash["notice"] %>
+      <p><%= flash["notice"] %></p>
+    <% end %>
+  </div>
+
+  <nav>
+    <a href="/">Home</a>
+
+    <% if session["user_id"] %>
       <a href="/logout">Logout</a>
+    <% else %>
       <a href="/login">Login</a>
       <a href="/users/new">Signup</a>
-    </div>
+    <% end %>
+  </nav>
 
-    <%= yield %>
-  </body>
+  <%= yield %>
+</body>
 </html>

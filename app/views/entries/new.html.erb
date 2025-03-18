@@ -1,22 +1,22 @@
 <h1>New Entry</h1>
 
 <form action="/entries" method="post">
-  <input type="hidden" name="place_id" value="<%= params["place_id"] %>">
+  <input type="hidden" name="place_id" value="<%= @place.id if @place %>">
 
   <p>
     <label for="title_input">Title</label>
-    <input type="text" name="title" id="title_input">
+    <input type="text" name="title" id="title_input" required>
   </p>
 
   <p>
     <label for="description_input">Description</label>
-    <input type="text" name="description" id="description_input">
+    <textarea name="description" id="description_input" required></textarea>
   </p>
 
   <p>
     <label for="occurred_on_input">Occurred On</label>
-    <input type="date" name="occurred_on" id="occurred_on_input">
+    <input type="date" name="occurred_on" id="occurred_on_input" required>
   </p>
 
-  <button>Save</button>
+  <button type="submit">Save</button>
 </form>

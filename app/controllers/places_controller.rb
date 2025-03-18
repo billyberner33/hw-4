@@ -1,28 +1,43 @@
 class PlacesController < ApplicationController
-
   def index
     @places = Place.all
   end
 
   def show
-    @place = Place.find_by({ "id" => params["id"] })
-    @entries = Entry.where({ "place_id" => @place["id"] })
+    @place = Place.find_by(id: params[:id])
+
+    if @place
+      @entries = Entry.where(place_id: @place.id)
+    else
+      flash[:alert] = "Place not found."
+      redirect_to places_path
+    end
   end
 
   def new
+    @place = Place.new
   end
 
   def create
-    if User.find_by({ "id" => session["user_id"]})
-      @place = Place.new
-      @place["name"] = params["name"]
-      @place.save
+    if session[:user_id].present?
+      @place = Place.new(place_params)
 
-      flash["notice"] = "Place was successfully created"
-      redirect_to "/places"
+      if @place.save
+        flash[:notice] = "Place was successfully created."
+        redirect_to places_path
+      else
+        flash[:alert] = "Error creating place."
+        render :new, status: :unprocessable_entity
+      end
     else
-      flash["notice"] = "You have to be logged in"
-      redirect_to "/places"
+      flash[:alert] = "You have to be logged in."
+      redirect_to login_path
     end
+  end
+
+  private
+
+  def place_params
+    params.require(:place).permit(:name)
   end
 end

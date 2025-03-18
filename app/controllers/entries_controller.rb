@@ -1,7 +1,6 @@
 class EntriesController < ApplicationController
-
   def index
-    @entries = Entry.where({ "user_id" => session["user_id"] })
+    @entries = Entry.where(user_id: session[:user_id])
   end
 
   def new
@@ -9,18 +8,26 @@ class EntriesController < ApplicationController
   end
 
   def create
-    if User.find_by({ "id" => session["user_id"] }) != nil
-      @entry = Entry.new
-      @entry["title"] = params["title"]
-      @entry["description"] = params["description"]
-      @entry["occurred_on"] = params["occurred_on"]
-      @entry.uploaded_image.attach(params["uploaded_image"])
-      @entry["place_id"] = params["place_id"]
-      @entry["user_id"] = session["user_id"]
-      @entry.save
-    else 
-      flash["notice"] = "Login first."
-    end 
-    redirect_to "/places/#{@entry["place_id"]}"
+    if session[:user_id].present?
+      @entry = Entry.new(entry_params)
+      @entry.user_id = session[:user_id]
+
+      if @entry.save
+        flash[:notice] = "Entry successfully created."
+        redirect_to place_path(@entry.place_id)
+      else
+        flash[:alert] = "Error creating entry. Please try again."
+        render :new, status: :unprocessable_entity
+      end
+    else
+      flash[:alert] = "Please log in first."
+      redirect_to login_path
+    end
+  end
+
+  private
+
+  def entry_params
+    params.require(:entry).permit(:title, :description, :occurred_on, :uploaded_image, :place_id)
   end
 end
